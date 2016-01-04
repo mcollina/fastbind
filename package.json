@@ -1,0 +1,33 @@
+{
+  "name": "fastbind",
+  "version": "0.0.1",
+  "description": "Bind ludicrously fast ",
+  "main": "bind.js",
+  "scripts": {
+    "test": "tape test.js | faucet"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mcollina/fastbind.git"
+  },
+  "keywords": [
+    "bind",
+    "fast"
+  ],
+  "author": "Matteo Collina <hello@matteocollina.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mcollina/fastbind/issues"
+  },
+  "homepage": "https://github.com/mcollina/fastbind#readme",
+  "devDependencies": {
+    "fastbench": "^1.0.0",
+    "faucet": "0.0.1",
+    "pre-commit": "^1.1.2",
+    "standard": "^5.4.1",
+    "tape": "^4.4.0"
+  },
+  "dependencies": {
+    "reusify": "^1.0.1"
+  }
+}
