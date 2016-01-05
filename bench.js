@@ -1,55 +1,74 @@
 'use strict'
 
 var bench = require('fastbench')
-var bind = require('./')()
-var obj = {}
+var reusify = require('reusify')
+var bind = require('./')(aaState)
+var queue = reusify(Holder)
 
 function benchFunc (cb) {
   var a = 42
-  setImmediate(function () {
-    aa(a, cb)
-  })
+  setImmediate(function (b) {
+    aa(a, b, cb)
+  }, 24)
 }
 
 function benchBind (cb) {
   var a = 42
-  setImmediate(aa.bind(null, a, cb))
+  setImmediate(aa.bind(null, a, 24), cb)
+}
+
+function benchReusify (cb) {
+  var state = queue.get()
+  state.a = 42
+  state.cb = cb
+  setImmediate(state.wrapper, 24)
 }
 
 function benchFastBind (cb) {
-  var a = 42
-  setImmediate(bind(aa, null, a, cb))
+  var state = new State(42, cb)
+  setImmediate(bind(state), 24)
 }
 
-function benchFuncWithThat (cb) {
-  var a = 42
-  setImmediate(function () {
-    aa.call(obj, a, cb)
-  })
-}
-
-function benchBindWithThat (cb) {
-  var a = 42
-  setImmediate(aa.bind(obj, a, cb))
-}
-
-function benchFastBindWithThat (cb) {
-  var a = 42
-  setImmediate(bind(aa, obj, a, cb))
-}
-
-function aa (a, cb) {
-  a + a
+function aa (a, b, cb) {
+  a + b
   cb()
 }
 
+function State (a, cb) {
+  this.a = a
+  this.cb = cb
+}
+
+function aaState (b) {
+  var a = this.a
+  var cb = this.cb
+  a + b
+  cb()
+}
+
+function Holder () {
+  this.next = null
+  this.a = 0
+  this.cb = null
+  var that = this
+  this.wrapper = function (b) {
+    var a = that.a
+    var cb = that.cb
+    a + b
+    cb()
+    this.a = 0
+    this.cb = noop
+    queue.release(that)
+  }
+}
+
+function noop () {}
+
 var run = bench([
+  benchReusify,
   benchFunc,
-  //benchBind,
+  benchBind,
   benchFastBind,
-  //benchFuncWithThat,
-  //benchBindWithThat,
-  //benchFastBindWithThat
-], 10000000)
+], 1000000)
 
 run(run)
