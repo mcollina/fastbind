@@ -1,4 +1,4 @@
-# fastbind&nbsp;&nbsp;[![Build Status](https://travis-ci.org/mcollina/aedes.svg)](https://travis-ci.org/mcollina/aedes)
+# fastbind&nbsp;&nbsp;[![Build Status](https://travis-ci.org/mcollina/fastbind.svg)](https://travis-ci.org/mcollina/fastbind)
 
 Bind a function to an Object ludicrously fast.
 
