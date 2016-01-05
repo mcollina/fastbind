@@ -7,7 +7,7 @@ arguments on `bind()` for performance reasons.__ Also, each bound
 function is throw away, you cannot reuse them.
 
 It is 250% faster than `bind()`, and 5-10% faster than the fastest code
-you can write (see [alternatives](#Alternatives)).
+you can write (see [alternatives](#alternatives)).
 
 You want to use this library when you need to pass some state to a
 callback in a super-hot code path.
